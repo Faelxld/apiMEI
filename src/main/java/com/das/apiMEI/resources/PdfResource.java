@@ -2,7 +2,9 @@ package com.das.apiMEI.resources;
 
 import com.das.apiMEI.dto.PostParam;
 import com.das.apiMEI.model.Empresa;
+import com.das.apiMEI.model.Pdf;
 import com.das.apiMEI.repository.EmpresaRepository;
+import com.das.apiMEI.repository.PdfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,24 +14,29 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/das")
-public class EmpresaResource {
+@RequestMapping("/pdf")
+public class PdfResource {
     @Autowired
-    private EmpresaRepository repository;
+    private PdfRepository repository;
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public List<Empresa> getAllPets() {
-        return repository.findAll();
-    }
 
     @RequestMapping(value = "/{cnpj}", method = RequestMethod.GET)
-    public Empresa getPetById(@PathVariable("cnpj") String cnpj) {
+    public List<Pdf> getById(@PathVariable("cnpj") String cnpj) {
 
-        return repository.findBy_id(cnpj);
+        List<Pdf> pdfs = repository.findAll();
+        List<Pdf> filtro =  new ArrayList<>();
+
+        for (Pdf pdf:pdfs) {
+            if(pdf.getCnpj().equals(cnpj)){
+                filtro.add(pdf);
+            }
+        }
+    return filtro;
     }
 
     @RequestMapping(method=RequestMethod.POST)
