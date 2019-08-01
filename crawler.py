@@ -80,11 +80,10 @@ def initialFireBase():
             'storageBucket': "contabilizafacil-f5a1e.appspot.com",
             'messagingSenderId': "545153194126"
       }
-    firebase = pyrebase.initialize_app(config)
+    return pyrebase.initialize_app(config)
 
-    db = firebase.database()
 
-    return db
+
 
  
             
@@ -99,11 +98,12 @@ const = '/src/main/java/com/das/apiMEI/crawler'
 print(os.getcwd() + const + "/chromedriver")
 empresas = [sys.argv[1]]
 jsons = []
+pdfs = []
 voltar = 0
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
-        browser = webdriver.Chrome(os.getcwd() + "/chromedriver" ,chrome_options=chrome_options)
+        browser = webdriver.Chrome( os.getcwd() + "/chromedriver" , chrome_options=chrome_options)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
@@ -126,7 +126,6 @@ for cnpj in empresas:
                 'das':None,
                 'pdfs':None
                 }
-        pdfs = []
         for i in range(0,anos):
             guias = []
             try:
