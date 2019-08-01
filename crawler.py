@@ -1,12 +1,8 @@
-import requests as rq
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import time
-from datetime import datetime
 from pymongo import MongoClient
-from dateutil import parser
-from dateutil import parser
 from python_anticaptcha import AnticaptchaClient, ImageToTextTask
 import urllib.request as req
 from pyrebase import *
