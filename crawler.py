@@ -99,13 +99,14 @@ const = '/src/main/java/com/das/apiMEI/crawler'
 print(os.getcwd() + const + "/chromedriver")
 empresas = [sys.argv[1]]
 jsons = []
+voltar = 0
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
-        browser = webdriver.Chrome(os.getcwd() +  "/chromedriver" ,chrome_options=chrome_options)
+        browser = webdriver.Chrome(os.getcwd() + "/chromedriver" ,chrome_options=chrome_options)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
-        username_box = browser.find_element_by_id('cnpj') 
+        username_box = browser.find_element_by_id('cnpj')
         username_box.send_keys(cnpj)
         login_box = browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[3]/div/button')
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
@@ -131,7 +132,7 @@ for cnpj in empresas:
             try:
                 lis = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/div/ul').find_elements_by_tag_name('li')
                 li = lis[i]
-                time.sleep(2)
+                voltar = li
                 combo_box = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/button')
                 ButtonOk = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/button')
                 time.sleep(2)
@@ -139,7 +140,7 @@ for cnpj in empresas:
                 time.sleep(2)
                 li.click()
                 ButtonOk.click()
-                html = browser.page_source                                       
+                html = browser.page_source
                 soup = BeautifulSoup(html, 'html.parser')
                 trs = soup.find('table',class_='table table-hover table-condensed emissao is-detailed').find_all('tr')
                 trs = trs[2:]
@@ -161,9 +162,10 @@ for cnpj in empresas:
                     'Juros':tds[6].text.replace('R$','').replace(' ',''),
                     'Total':tds[7].text.replace('R$','').replace(' ',''),
                     'Data_Vencimento':getData(tds[8].text),
-                    'Data_Acolimento':getData(tds[9].text)
+                    'Data_Acolimento':getData(tds[9].text),
 
-                   }
+
+                }
                 guias.append(guia)
             pdfs.append(pdf)
             time.sleep(5)
@@ -174,11 +176,10 @@ for cnpj in empresas:
             time.sleep(5)
             buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
             buttonImprimir.click()
-            time.sleep(5)
-            browser.get(emissao)           
+            time.sleep(6)
+            browser.get(emissao)
             json['das'] = guias
         jsons.append(json)
-
     except Exception as ex:
         print(ex)
     finally:
