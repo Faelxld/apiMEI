@@ -105,7 +105,10 @@ voltar = 0
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
-        browser = webdriver.Chrome( os.getcwd() + "/chromedriver" , chrome_options=chrome_options)
+        try:
+            browser = webdriver.Chrome( os.getcwd() + "/chromedriver" , chrome_options=chrome_options)
+        except Exception as ex:
+            print(ex)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
@@ -145,7 +148,8 @@ for cnpj in empresas:
                 soup = BeautifulSoup(html, 'html.parser')
                 trs = soup.find('table',class_='table table-hover table-condensed emissao is-detailed').find_all('tr')
                 trs = trs[2:]
-            except:
+            except Exception as ex:
+                print(ex)
                 continue
             for tr in trs:
                 tds = tr.find_all('td')
