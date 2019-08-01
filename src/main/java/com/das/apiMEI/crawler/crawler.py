@@ -60,7 +60,7 @@ def buscaCNPJ(db):
             except:
                 print('Not format')
     return remove_repetidos(cnpjs)
-                
+
 def initialFireBase():
     config = {
             'apiKey': "AIzaSyBIXY8s7mrDNw1V_BExArirz0FTWJoeEI4",
@@ -86,12 +86,13 @@ prefs = {'download.default_directory' : os.getcwd() + '/guias'}
 chrome_options.add_experimental_option('prefs', prefs)
 
 const = '/src/main/java/com/das/apiMEI/crawler'
+print(os.getcwd() + const + "/chromedriver")
 empresas = [sys.argv[1]]
 jsons = []
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
-        browser = webdriver.Chrome(os.getcwd() + const + "/chromedriver" ,chrome_options=chrome_options)
+        browser = webdriver.Chrome(os.getcwd() +  "/chromedriver" ,chrome_options=chrome_options)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj') 

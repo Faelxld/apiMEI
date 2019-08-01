@@ -37,7 +37,8 @@ public class EmpresaResource {
         final Crawler crawler = new Crawler();
         String dir = System.getProperty("user.dir");
         String cost = "/src/main/java/com/das/apiMEI/crawler";
-        crawler.executeCommand("sudo python3 " +  dir + cost +"/crawler.py " + objDto.getCnpj());
+        crawler.executeCommand("python3 " +  dir + "/crawler.py " + objDto.getCnpj());
+        System.out.println(dir);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(objDto.getCnpj()).toUri();
         return ResponseEntity.created(uri).build();
