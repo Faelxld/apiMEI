@@ -11,7 +11,6 @@ import urllib.request as req
 from pyrebase import *
 import os
 import sys
-
 api_key = 'cfe54019f70ef987c0afcae6da1082ad'
 
 def insertNuvem(json):
@@ -108,9 +107,9 @@ for cnpj in empresas:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
         try:
             browser = webdriver.Chrome( os.getcwd() + "/chromedriver" , chrome_options=chrome_options)
+            browser.get(url)
         except Exception as ex:
             print(ex)
-        browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
         username_box.send_keys(cnpj)
