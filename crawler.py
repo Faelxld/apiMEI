@@ -195,7 +195,7 @@ for json in jsons:
 arquivos = os.listdir(os.getcwd() + '/guias')
 firebase = initialFireBase()
 storage = firebase.storage()
-for i in range(0,len(pdfs)):
+for i in range(0,len(arquivos)):
     results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivos[i])
     pdfs[i]['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
     pdfs[i]['_id'] = results['downloadTokens']
