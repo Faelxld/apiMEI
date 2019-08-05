@@ -90,7 +90,7 @@ def initialFireBase():
  
             
 chrome_options = Options()
-chrome_options.add_argument('--headless')
+#chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 prefs = {'download.default_directory' : os.getcwd() + '/guias'}
@@ -117,7 +117,7 @@ for cnpj in empresas:
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
         req.urlretrieve(captcha_fp, "captcha.jpg")
         captcha_input.send_keys(getCaptcha())
-        time.sleep(2)
+        time.sleep(5)
         login_box.click()
         emissao = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/emissao'
         browser.get(emissao)
@@ -129,7 +129,6 @@ for cnpj in empresas:
         json = {'_id': cnpj,
                 "cnpj":cnpj,
                 'das':None,
-                'pdfs':None
                 }
         for i in range(0,anos):
             guias = []
@@ -183,7 +182,8 @@ for cnpj in empresas:
             buttonImprimir.click()
             time.sleep(6)
             browser.get(emissao)
-            json['das'] = guias
+            time.sleep(5)
+        json['das'] = guias
         jsons.append(json)
     except Exception as ex:
         print(ex)

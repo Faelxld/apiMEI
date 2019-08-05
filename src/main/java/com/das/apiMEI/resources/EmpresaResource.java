@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/das")
+@RequestMapping("/das/das")
 public class EmpresaResource {
     @Autowired
     private EmpresaRepository repository;
