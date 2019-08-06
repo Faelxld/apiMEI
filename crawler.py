@@ -126,7 +126,6 @@ for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
         browser = webdriver.Chrome(os.getcwd() + "/chromedriver" ,chrome_options=chrome_options)
-        enable_download_in_headless_chrome(browser,download_dir)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
@@ -189,15 +188,16 @@ for cnpj in empresas:
                 }
                 guias.append(guia)
             pdfs.append(pdf)
-            time.sleep(10)
+            time.sleep(2)
+            enable_download_in_headless_chrome(browser,download_dir)
             check_box = browser.find_element_by_id('selecionarTodos')
             check_box.click()
             buttonEmitir = browser.find_element_by_id('btnEmitirDas')
             buttonEmitir.click()
-            time.sleep(10)
+            time.sleep(3)
             buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
             buttonImprimir.click()
-            time.sleep(10)
+            time.sleep(3)
             browser.get(emissao)
             json['das'] = guias
         jsons.append(json)
@@ -223,4 +223,4 @@ for arquivo in arquivos:
 for pdf in pdfs:
     insertPdf(pdf)
 
-os.system("rm " + os.getcwd() + '/guias/*.pdf')
+os.system("sudo rm " + os.getcwd() + '/guias/*.pdf')
