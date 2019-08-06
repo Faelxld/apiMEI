@@ -158,7 +158,6 @@ for cnpj in empresas:
                 continue
             for tr in trs:
                 tds = tr.find_all('td')
-                print(tds)
                 pdf = {"ano":tds[1].text.split('/')[1],
                        'link':None,
                        'cnpj': cnpj,
