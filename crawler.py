@@ -85,12 +85,21 @@ def initialFireBase():
     return pyrebase.initialize_app(config)
 
 
+def getTrs(soup):
+    try:
+        table = soup.find('table',class_='table table-hover table-condensed emissao is-detailed')
+        if table is None:
+            return []
+        else:
+            trs = table.find_all('tr')
 
+        return trs[2:]
+    except Exception as ex:
+        print(ex)
+        return []
 
- 
-            
 chrome_options = Options()
-#chrome_options.add_argument('--headless')
+chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 prefs = {'download.default_directory' : os.getcwd() + '/guias'}
@@ -100,16 +109,12 @@ const = '/src/main/java/com/das/apiMEI/crawler'
 print(os.getcwd() + const + "/chromedriver")
 empresas = [sys.argv[1]]
 jsons = []
-pdfs = []
 voltar = 0
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
-        try:
-            browser = webdriver.Chrome( os.getcwd() + "/chromedriver" , chrome_options=chrome_options)
-            browser.get(url)
-        except Exception as ex:
-            print(ex)
+        browser = webdriver.Chrome(os.getcwd() + "/chromedriver" ,chrome_options=chrome_options)
+        browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
         username_box.send_keys(cnpj)
@@ -117,7 +122,7 @@ for cnpj in empresas:
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
         req.urlretrieve(captcha_fp, "captcha.jpg")
         captcha_input.send_keys(getCaptcha())
-        time.sleep(5)
+        time.sleep(2)
         login_box.click()
         emissao = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/emissao'
         browser.get(emissao)
@@ -129,7 +134,9 @@ for cnpj in empresas:
         json = {'_id': cnpj,
                 "cnpj":cnpj,
                 'das':None,
+                'pdfs':None
                 }
+        pdfs = []
         for i in range(0,anos):
             guias = []
             try:
@@ -147,11 +154,11 @@ for cnpj in empresas:
                 soup = BeautifulSoup(html, 'html.parser')
                 trs = soup.find('table',class_='table table-hover table-condensed emissao is-detailed').find_all('tr')
                 trs = trs[2:]
-            except Exception as ex:
-                print(ex)
+            except:
                 continue
             for tr in trs:
                 tds = tr.find_all('td')
+                print(tds)
                 pdf = {"ano":tds[1].text.split('/')[1],
                        'link':None,
                        'cnpj': cnpj,
@@ -161,12 +168,12 @@ for cnpj in empresas:
                     'Periodo':tds[1].text,
                     'Apurado': tds[2].text.replace('\n','').replace(' ',''),
                     'INSS':tds[3].text.replace('\n','').replace(' ',''),
-                    'Principal':tds[4].text.replace('R$','').replace(' ',''),
-                    'Multa':tds[5].text.replace('R$','').replace(' ',''),
-                    'Juros':tds[6].text.replace('R$','').replace(' ',''),
-                    'Total':tds[7].text.replace('R$','').replace(' ',''),
-                    'Data_Vencimento':getData(tds[8].text),
-                    'Data_Acolimento':getData(tds[9].text),
+                    'Principal':tds[5].text.replace('R$','').replace(' ',''),
+                    'Multa':tds[6].text.replace('R$','').replace(' ',''),
+                    'Juros':tds[7].text.replace('R$','').replace(' ',''),
+                    'Total':tds[8].text.replace('R$','').replace(' ',''),
+                    'Data_Vencimento':getData(tds[9].text),
+                    'Data_Acolimento':getData(tr.find('td',class_='acolhimento updatable text-center').text),
 
 
                 }
@@ -182,8 +189,7 @@ for cnpj in empresas:
             buttonImprimir.click()
             time.sleep(6)
             browser.get(emissao)
-            time.sleep(5)
-        json['das'] = guias
+            json['das'] = guias
         jsons.append(json)
     except Exception as ex:
         print(ex)
@@ -195,7 +201,7 @@ for json in jsons:
 arquivos = os.listdir(os.getcwd() + '/guias')
 firebase = initialFireBase()
 storage = firebase.storage()
-for i in range(0,len(arquivos)):
+for i in range(0,len(pdfs)-1):
     results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivos[i])
     pdfs[i]['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
     pdfs[i]['_id'] = results['downloadTokens']
