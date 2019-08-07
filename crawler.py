@@ -198,13 +198,11 @@ for cnpj in empresas:
             firebase = initialFireBase()
             storage = firebase.storage()
             arquivo = os.listdir(os.getcwd() + '/guias')
-            print(arquivo[0])
             results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivo[0])
             pdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
             pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
-            print(pdf)
-            pdfs.append(pdf)
-        browser.get(emissao)
+            insertPdf(pdf)
+            browser.get(emissao)
         json['das'].append(guias)
         jsons.append(json)
     except Exception as ex:
@@ -213,9 +211,5 @@ for cnpj in empresas:
         browser.close()
 for json in jsons:
     insertNuvem(json)
-
-
-for pdf in pdfs:
-    insertPdf(pdf)
 
 os.system("sudo rm " + os.getcwd() + '/guias/*.pdf')
