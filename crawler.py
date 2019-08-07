@@ -203,10 +203,10 @@ for cnpj in empresas:
             pdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
             pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
             print(pdf)
-            browser.get(emissao)
-            json['das'].append(guias)
+            pdfs.append(pdf)
+        browser.get(emissao)
+        json['das'].append(guias)
         jsons.append(json)
-        pdfs.append(pdf)
     except Exception as ex:
         print(ex)
     finally:
