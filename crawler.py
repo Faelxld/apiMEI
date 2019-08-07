@@ -105,7 +105,7 @@ def enable_download_in_headless_chrome( driver, download_dir):
     driver.execute("send_command", params)
 
 chrome_options = Options()
-#chrome_options.add_argument('headless')
+chrome_options.add_argument('headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 download_dir = os.getcwd() + '/guias/'
