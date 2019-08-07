@@ -105,7 +105,7 @@ def enable_download_in_headless_chrome( driver, download_dir):
     driver.execute("send_command", params)
 
 chrome_options = Options()
-chrome_options.add_argument('headless')
+#chrome_options.add_argument('headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 download_dir = os.getcwd() + '/guias/'
@@ -186,24 +186,27 @@ for cnpj in empresas:
                  'cnpj': cnpj,
                  '_id': None
             }
-            time.sleep(2)
-            check_box = browser.find_element_by_id('selecionarTodos')
-            check_box.click()
-            buttonEmitir = browser.find_element_by_id('btnEmitirDas')
-            buttonEmitir.click()
-            time.sleep(3)
-            buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
-            buttonImprimir.click()
-            time.sleep(5)
-            firebase = initialFireBase()
-            storage = firebase.storage()
-            arquivo = os.listdir(os.getcwd() + '/guias')
-            results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivo[0])
-            pdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
-            pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
-            insertPdf(pdf)
-            browser.get(emissao)
-        json['das'].append(guias)
+            try:
+                time.sleep(2)
+                check_box = browser.find_element_by_id('selecionarTodos')
+                check_box.click()
+                buttonEmitir = browser.find_element_by_id('btnEmitirDas')
+                buttonEmitir.click()
+                time.sleep(3)
+                buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
+                buttonImprimir.click()
+                time.sleep(5)
+                firebase = initialFireBase()
+                storage = firebase.storage()
+                arquivo = os.listdir(os.getcwd() + '/guias')
+                results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivo[0])
+                pdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
+                pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
+                insertPdf(pdf)
+                browser.get(emissao)
+                json['das'].append(guias)
+            except Exception as ex:
+                print(ex)
         jsons.append(json)
     except Exception as ex:
         print(ex)
