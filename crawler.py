@@ -186,7 +186,9 @@ for cnpj in empresas:
                  'cnpj': cnpj,
                  '_id': None
             }
+
             try:
+                json['das'].append(guias)
                 time.sleep(2)
                 check_box = browser.find_element_by_id('selecionarTodos')
                 check_box.click()
@@ -204,7 +206,6 @@ for cnpj in empresas:
                 pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
                 insertPdf(pdf)
                 browser.get(emissao)
-                json['das'].append(guias)
             except Exception as ex:
                 print(ex)
         jsons.append(json)
