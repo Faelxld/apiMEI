@@ -101,7 +101,6 @@ def getTrs(soup):
 def enable_download_in_headless_chrome( driver, download_dir):
     #add missing support for chrome "send_command"  to selenium webdriver
     driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
-
     params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_dir}}
     driver.execute("send_command", params)
 
@@ -111,9 +110,7 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 download_dir = os.getcwd() + '/guias/'
 prefs = {'download.default_directory':download_dir,
-         "download.prompt_for_download": False,
-         "download.directory_upgrade": True,
-         "plugins.always_open_pdf_externally": True}
+         }
 chrome_options.add_experimental_option('prefs', prefs)
 
 const = '/src/main/java/com/das/apiMEI/crawler'
@@ -126,6 +123,7 @@ for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
         browser = webdriver.Chrome(os.getcwd() + "/chromedriver" ,chrome_options=chrome_options)
+        enable_download_in_headless_chrome(browser,download_dir)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
@@ -145,7 +143,7 @@ for cnpj in empresas:
         anos = len(lis)
         json = {'_id': cnpj,
                 "cnpj":cnpj,
-                'das':None,
+                'das':[],
                 }
         for i in range(0,anos):
             guias = []
@@ -155,9 +153,9 @@ for cnpj in empresas:
                 voltar = li
                 combo_box = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/button')
                 ButtonOk = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/button')
-                time.sleep(2)
+                time.sleep(4)
                 combo_box.click()
-                time.sleep(2)
+                time.sleep(4)
                 li.click()
                 ButtonOk.click()
                 html = browser.page_source
@@ -168,11 +166,7 @@ for cnpj in empresas:
                 continue
             for tr in trs:
                 tds = tr.find_all('td')
-                pdf = {"ano":tds[1].text.split('/')[1],
-                       'link':None,
-                       'cnpj': cnpj,
-                       '_id': None
-                       }
+                ano = tds[1].text.split('/')[1]
                 guia = {
                     'Periodo':tds[1].text,
                     'Apurado': tds[2].text.replace('\n','').replace(' ',''),
@@ -187,9 +181,12 @@ for cnpj in empresas:
 
                 }
                 guias.append(guia)
-            pdfs.append(pdf)
+            pdf = {"ano":ano,
+                  'link':None,
+                 'cnpj': cnpj,
+                 '_id': None
+            }
             time.sleep(2)
-            enable_download_in_headless_chrome(browser,download_dir)
             check_box = browser.find_element_by_id('selecionarTodos')
             check_box.click()
             buttonEmitir = browser.find_element_by_id('btnEmitirDas')
@@ -197,27 +194,25 @@ for cnpj in empresas:
             time.sleep(3)
             buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
             buttonImprimir.click()
-            time.sleep(3)
+            time.sleep(5)
+            firebase = initialFireBase()
+            storage = firebase.storage()
+            arquivo = os.listdir(os.getcwd() + '/guias')
+            print(arquivo[0])
+            results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivo[0])
+            pdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
+            pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
+            print(pdf)
             browser.get(emissao)
-            json['das'] = guias
+            json['das'].append(guias)
         jsons.append(json)
+        pdfs.append(pdf)
     except Exception as ex:
         print(ex)
     finally:
         browser.close()
 for json in jsons:
     insertNuvem(json)
-
-arquivos = os.listdir(os.getcwd() + '/guias')
-firebase = initialFireBase()
-storage = firebase.storage()
-i = 0
-for arquivo in arquivos:
-    results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivo)
-    pdfs[i]['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
-    pdfs[i]['_id'] = results['downloadTokens']
-    i = i + 1
-
 
 
 for pdf in pdfs:
