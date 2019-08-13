@@ -48,7 +48,7 @@ def montaMes(das,cnpj,ano):
     lista = []
     i = 0
     for item in das:
-        lista.append(cnpj +'-' + str(i) +'-'+ ano )
+        lista.append(cnpj +'-' + str(i) +'-'+ ano + '.pdf')
         i = i + 1
     return lista
 
