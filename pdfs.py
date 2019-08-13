@@ -71,56 +71,57 @@ for item in das:
         cnpj = item['cnpj']
         listaDas = item['das']
         for ds in listaDas:
-            act_sub_pages_name = []
-            apurados = []
-            for dsl in ds:
-                try:
-                    #os.system("sudo rm processados/*.pdf")
-                    #os.system("sudo rm separados/*.pdf")
-                    ano = dsl['Periodo'].split('/')[1]
-                    print(dsl['Periodo'])
-                    if dsl['Apurado'] == 'Sim':
-                        apurados.append(dsl)
-                        act_sub_pages_name.append(cnpj + '-' + dsl['Periodo'].replace('/','-') + '.pdf')
-                    print(act_sub_pages_name )
-                    pdf = list(collection.find({'cnpj':cnpj,'ano': ano ,'lido':False}))[0]
-                    name = cnpj + '-' + ano
-                    download_file(pdf['link'], name )
-                    act_pdf_file = os.getcwd() + '/separados/' + name + '.pdf'
-                    reader = PdfFileReader(act_pdf_file)
-                    print(len(act_sub_pages_name))
-                    for x in range(reader.getNumPages()):
-                        print(x)
-                        pdf_splitter(x, act_pdf_file)
-                    i = 0
-                    for dsll in apurados:
-                        try:
-                            firebase = initialFireBase()
-                            storage = firebase.storage()
-                            arquivos = os.listdir(os.getcwd() + '/processados')
-                            arqvPdf = {"Periodo":dsll['Periodo'],
-                            'link':None,
-                            'cnpj': cnpj,
-                            '_id': None,
-                            'lido': True,
-                            'partial': True
-                            }
-                            results = storage.child("cpnj/das/" +  arquivos[i]).put(os.getcwd() + '/processados/' + arquivos[i])
-                            arqvPdf['link'] = storage.child("cpnj/das/" +  arquivos[i]).get_url(None)
-                            arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
-                            print(arqvPdf)
-                            insertPdf(arqvPdf)
-                            pdf['lido'] = True
-                            collection.update({'_id':pdf['_id']},pdf)
-                            i = i + 1
-                        except Exception as ex:
-                            print(ex)
+            try:
+                act_sub_pages_name = []
+                apurados = []
+                for dsl in ds:
+                    try:
+                        #os.system("sudo rm processados/*.pdf")
+                        #os.system("sudo rm separados/*.pdf")
+                        ano = dsl['Periodo'].split('/')[1]
+                        print(dsl['Periodo'])
+                        if dsl['Apurado'] == 'Sim':
+                            apurados.append(dsl)
+                            act_sub_pages_name.append(cnpj + '-' + dsl['Periodo'].replace('/','-') + '.pdf')
+                    except Exception as ex:
+                        print(ex)
+                print(act_sub_pages_name )
+                pdf = list(collection.find({'cnpj':cnpj,'ano': ano ,'lido':False}))[0]
+                name = cnpj + '-' + ano
+                download_file(pdf['link'], name )
+                act_pdf_file = os.getcwd() + '/separados/' + name + '.pdf'
+                reader = PdfFileReader(act_pdf_file)
+                print(len(act_sub_pages_name))
+                for x in range(reader.getNumPages()):
+                    print(x)
+                    pdf_splitter(x, act_pdf_file)
+                for dsll in apurados:
+                    try:
+                        firebase = initialFireBase()
+                        storage = firebase.storage()
+                        arqvPdf = {"Periodo":dsll['Periodo'],
+                        'link':None,
+                        'cnpj': cnpj,
+                        '_id': None,
+                        'lido': True,
+                        'partial': True
+                        }
+                        arquivo = cnpj + '-' + dsll['Periodo'].replace('/','-') + '.pdf'
+                        results = storage.child("cpnj/das/" + cnpj + '-' + arquivo).put(os.getcwd() + '/processados/' + arquivo)
+                        arqvPdf['link'] = storage.child("cpnj/das/" +  arquivo).get_url(None)
+                        arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
+                        print(arqvPdf)
+                        insertPdf(arqvPdf)
+                        pdf['lido'] = True
+                        collection.update({'_id':pdf['_id']},pdf)
+                    except Exception as ex:
+                        print(ex)
 
 
-                except Exception as ex:
-                    print(ex)
-                finally:
-                    os.system("sudo rm processados/*.pdf")
-                    os.system("sudo rm separados/*.pdf")
+            except Exception as ex:
+                print(ex)
+            finally:
+                os.system("sudo rm processados/*.pdf")
+                os.system("sudo rm separados/*.pdf")
     except Exception as ex:
         print(ex)
