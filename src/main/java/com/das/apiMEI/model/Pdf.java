@@ -17,7 +17,6 @@ public class Pdf {
     private String _id;
     private String cnpj;
     private String link;
-    private String ano;
     private boolean lido;
     private boolean partial;
 
