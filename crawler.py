@@ -211,7 +211,7 @@ for cnpj in empresas:
                 arquivo = os.listdir(os.getcwd() + '/guias')
                 time.sleep(2)
                 results = storage.child("cpnj/das/" +  arquivo[0]).put(os.getcwd() + '/guias/' + arquivo[0])
-                pdf['link'] = storage.child("cpnj/das/" +  arquivo[0]).get_url()
+                pdf['link'] = storage.child("cpnj/das/" +  arquivo[0]).get_url(None)
                 pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
                 insertPdf(pdf)
                 browser.get(emissao)
