@@ -67,14 +67,14 @@ collection = db['pdfs']
 das = list(db['das'].find())
 for item in das:
     try:
-        os.system("sudo rm processados/*.pdf")
-        os.system("sudo rm separados/*.pdf")
+        #os.system("sudo rm processados/*.pdf")
+        #os.system("sudo rm separados/*.pdf")
         cnpj = item['cnpj']
         listaDas = item['das']
         for ds in listaDas:
             try:
-                os.system("sudo rm processados/*.pdf")
-                os.system("sudo rm separados/*.pdf")
+                #os.system("sudo rm processados/*.pdf")
+                #os.system("sudo rm separados/*.pdf")
                 act_sub_pages_name = []
                 ano = ds[0]['Periodo'].split('/')[1]
                 print(ds[0]['Periodo'])
