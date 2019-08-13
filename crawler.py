@@ -33,12 +33,14 @@ def insertPdf(json):
     collection = db['pdfs']
     try:
         dicio = {"_id":json['_id']}
-        if collection.find_one(dicio) is None:
+        element = collection.find_one(dicio)
+        if element is None:
             collection.insert(json)
             print("Novo Produto")
             print(json)
         else:
-            collection.update(dicio,json)
+            json['lido'] = element['lido']
+            #collection.update(dicio,json)
             print("Atualizado")
     except Exception as ex :
         print(ex)
@@ -184,10 +186,13 @@ for cnpj in empresas:
             pdf = {"ano":ano,
                   'link':None,
                  'cnpj': cnpj,
-                 '_id': None
+                 '_id': None,
+                  'lido': False,
+                   'partial': False
             }
 
             try:
+                os.system('sudo rm guias/*.pdf')
                 json['das'].append(guias)
                 time.sleep(2)
                 check_box = browser.find_element_by_id('selecionarTodos')
@@ -197,15 +202,21 @@ for cnpj in empresas:
                 time.sleep(3)
                 buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
                 buttonImprimir.click()
-                time.sleep(5)
+                time.sleep(6)
                 firebase = initialFireBase()
                 storage = firebase.storage()
                 arquivo = os.listdir(os.getcwd() + '/guias')
+                print(arquivo[0])
+                os.rename(os.getcwd() + '/guias/' + arquivo[0], os.getcwd() + '/guias/' +cnpj + '-' + ano + '.pdf')
+                arquivo = os.listdir(os.getcwd() + '/guias')
+                time.sleep(2)
                 results = storage.child("cpnj/das").put(os.getcwd() + '/guias/' + arquivo[0])
                 pdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
                 pdf['_id'] =  pdf['cnpj'] + '-' + pdf['ano']
                 insertPdf(pdf)
                 browser.get(emissao)
+                time.sleep(3)
+                os.system('sudo rm guias/*.pdf')
             except Exception as ex:
                 print(ex)
         jsons.append(json)
@@ -216,4 +227,4 @@ for cnpj in empresas:
 for json in jsons:
     insertNuvem(json)
 
-os.system("sudo rm " + os.getcwd() + '/guias/*.pdf')
+os.system('sudo rm guias/*.pdf')

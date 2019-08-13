@@ -18,6 +18,8 @@ public class Pdf {
     private String cnpj;
     private String link;
     private String ano;
+    private boolean lido;
+    private boolean partial;
 
     public String get_id() {
         return _id;
@@ -49,5 +51,21 @@ public class Pdf {
 
     public void setAno(String ano) {
         this.ano = ano;
+    }
+
+    public boolean isLido() {
+        return lido;
+    }
+
+    public void setLido(boolean lido) {
+        this.lido = lido;
+    }
+
+    public boolean isPartial() {
+        return partial;
+    }
+
+    public void setPartial(boolean partial) {
+        this.partial = partial;
     }
 }
