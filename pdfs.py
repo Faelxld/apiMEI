@@ -107,8 +107,8 @@ for item in das:
                         'partial': True
                         }
                         arquivo = cnpj + '-' + dsll['Periodo'].replace('/','-') + '.pdf'
-                        results = storage.child("cpnj/das/" + cnpj + '-' + arquivo).put(os.getcwd() + '/processados/' + arquivo)
-                        arqvPdf['link'] = storage.child("cpnj/das/" +  arquivo).get_url(None)
+                        results = storage.child("cpnj/das/" + arquivo).put(os.getcwd() + '/processados/' + arquivo)
+                        arqvPdf['link'] = storage.child("cpnj/das/" + arquivo).get_url(None)
                         arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
                         print(arqvPdf)
                         insertPdf(arqvPdf)
