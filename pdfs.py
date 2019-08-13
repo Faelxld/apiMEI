@@ -40,15 +40,14 @@ def download_file(download_url,name):
 def filtrarAno(lista):
     filtro = []
     for li in lista:
-        for item in li:
-            if item['Apurado'] == 'Sim':
-                filtro.append(item)
+        if li['Apurado'] == 'Sim':
+            filtro.append(item)
     return filtro
 def montaMes(das,cnpj,ano):
     lista = []
     i = 0
     for item in das:
-        lista.append(cnpj +'-' + str(i) +'-'+ ano + '.pdf')
+        lista.append(cnpj + '-' + item['Periodo'].replace('/','-') + '-' + ano + '.pdf')
         i = i + 1
     return lista
 
@@ -67,58 +66,61 @@ collection = db['pdfs']
 das = list(db['das'].find())
 for item in das:
     try:
-        #os.system("sudo rm processados/*.pdf")
-        #os.system("sudo rm separados/*.pdf")
+        os.system("sudo rm processados/*.pdf")
+        os.system("sudo rm separados/*.pdf")
         cnpj = item['cnpj']
         listaDas = item['das']
         for ds in listaDas:
-            try:
-                #os.system("sudo rm processados/*.pdf")
-                #os.system("sudo rm separados/*.pdf")
-                act_sub_pages_name = []
-                ano = ds[0]['Periodo'].split('/')[1]
-                print(ds[0]['Periodo'])
-                act_sub_pages_name = montaMes(ds,cnpj,ano) 
-                pdf = list(collection.find({'cnpj':cnpj,'ano': ano ,'lido':False}))[0]
-                print(pdf)
-                name = cnpj + '-' + ano
-                download_file(pdf['link'], name )
-                act_pdf_file = os.getcwd() + '/separados/' + name + '.pdf'
-                reader = PdfFileReader(act_pdf_file)
-                print(len(act_sub_pages_name))
-                for x in range(reader.getNumPages()): 
-                    print(x)
-                    pdf_splitter(x, act_pdf_file)
+            act_sub_pages_name = []
+            for dsl in ds:
+                try:
+                    #os.system("sudo rm processados/*.pdf")
+                    #os.system("sudo rm separados/*.pdf")
+                    act_sub_pages_name = []
+                    ano = dsl['Periodo'].split('/')[1]
+                    print(dsl['Periodo'])
+                    if dsl['Apurado'] == 'Sim':
+                        act_sub_pages_name.append(cnpj + '-' + dsl['Periodo'].replace('/','-') + '.pdf')
+                    print(act_sub_pages_name )
+                    pdf = list(collection.find({'cnpj':cnpj,'ano': ano ,'lido':False}))[0]
+                    name = cnpj + '-' + ano
+                    download_file(pdf['link'], name )
+                    act_pdf_file = os.getcwd() + '/separados/' + name + '.pdf'
+                    reader = PdfFileReader(act_pdf_file)
+                    print(len(act_sub_pages_name))
+                    for x in range(reader.getNumPages()):
+                        print(x)
+                        pdf_splitter(x, act_pdf_file)
 
-                i = 0
-                for item in ds:
-                    try:
-                        firebase = initialFireBase()
-                        storage = firebase.storage()
-                        arquivos = os.listdir(os.getcwd() + '/processados')
-                        arqvPdf = {"Periodo":item['Periodo'],
-                        'link':None,
-                        'cnpj': cnpj,
-                        '_id': None,
-                        'lido': True,
-                        'partial': True
-                        }
-                        results = storage.child("cpnj/das").put(os.getcwd() + '/processados/' + arquivos[i])
-                        arqvPdf['link'] = "https://firebasestorage.googleapis.com/v0/b/contabilizafacil-f5a1e.appspot.com/o/cpnj%2Fdas?alt=media&token=" + results['downloadTokens']
-                        arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
-                        print(arqvPdf)
-                        insertPdf(arqvPdf)
-                        pdf['lido'] = True
-                        collection.update({'_id':pdf['_id']},pdf)
-                        i = i + 1
-                    except Exception as ex:
-                        print(ex)
-    
-            except Exception as ex:
-                print(ex)
+                    i = 0
+                    for item in ds:
+                        try:
+                            firebase = initialFireBase()
+                            storage = firebase.storage()
+                            arquivos = os.listdir(os.getcwd() + '/processados')
+                            arqvPdf = {"Periodo":item['Periodo'],
+                            'link':None,
+                            'cnpj': cnpj,
+                            '_id': None,
+                            'lido': True,
+                            'partial': True
+                            }
+                            results = storage.child("cpnj/das/" +  arquivos[i]).put(os.getcwd() + '/processados/' + arquivos[i])
+                            pdf['link'] = storage.child("cpnj/das/" +  arquivos[i]).get_url()
+                            arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
+                            print(arqvPdf)
+                            insertPdf(arqvPdf)
+                            pdf['lido'] = True
+                            collection.update({'_id':pdf['_id']},pdf)
+                            i = i + 1
+                        except Exception as ex:
+                            print(ex)
 
-            finally:
-                os.system("sudo rm processados/*.pdf")
-                os.system("sudo rm separados/*.pdf")
+                except Exception as ex:
+                    print(ex)
+
+                finally:
+                    os.system("sudo rm processados/*.pdf")
+                    os.system("sudo rm separados/*.pdf")
     except Exception as ex:
         print(ex)
