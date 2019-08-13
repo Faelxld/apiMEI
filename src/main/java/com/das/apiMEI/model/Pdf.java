@@ -44,13 +44,7 @@ public class Pdf {
         this.link = link;
     }
 
-    public String getAno() {
-        return ano;
-    }
 
-    public void setAno(String ano) {
-        this.ano = ano;
-    }
 
     public boolean isLido() {
         return lido;
