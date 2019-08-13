@@ -72,14 +72,15 @@ for item in das:
         listaDas = item['das']
         for ds in listaDas:
             act_sub_pages_name = []
+            apurados = []
             for dsl in ds:
                 try:
                     #os.system("sudo rm processados/*.pdf")
                     #os.system("sudo rm separados/*.pdf")
-                    act_sub_pages_name = []
                     ano = dsl['Periodo'].split('/')[1]
                     print(dsl['Periodo'])
                     if dsl['Apurado'] == 'Sim':
+                        apurados.append(dsl)
                         act_sub_pages_name.append(cnpj + '-' + dsl['Periodo'].replace('/','-') + '.pdf')
                     print(act_sub_pages_name )
                     pdf = list(collection.find({'cnpj':cnpj,'ano': ano ,'lido':False}))[0]
@@ -91,14 +92,13 @@ for item in das:
                     for x in range(reader.getNumPages()):
                         print(x)
                         pdf_splitter(x, act_pdf_file)
-
                     i = 0
-                    for item in ds:
+                    for dsll in apurados:
                         try:
                             firebase = initialFireBase()
                             storage = firebase.storage()
                             arquivos = os.listdir(os.getcwd() + '/processados')
-                            arqvPdf = {"Periodo":item['Periodo'],
+                            arqvPdf = {"Periodo":dsll['Periodo'],
                             'link':None,
                             'cnpj': cnpj,
                             '_id': None,
@@ -106,7 +106,7 @@ for item in das:
                             'partial': True
                             }
                             results = storage.child("cpnj/das/" +  arquivos[i]).put(os.getcwd() + '/processados/' + arquivos[i])
-                            pdf['link'] = storage.child("cpnj/das/" +  arquivos[i]).get_url()
+                            arqvPdf['link'] = storage.child("cpnj/das/" +  arquivos[i]).get_url(None)
                             arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
                             print(arqvPdf)
                             insertPdf(arqvPdf)
@@ -116,9 +116,9 @@ for item in das:
                         except Exception as ex:
                             print(ex)
 
+
                 except Exception as ex:
                     print(ex)
-
                 finally:
                     os.system("sudo rm processados/*.pdf")
                     os.system("sudo rm separados/*.pdf")
