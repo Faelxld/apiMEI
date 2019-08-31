@@ -3,6 +3,7 @@ import urllib
 import os
 from pyrebase import *
 from pymongo import MongoClient
+import sys
 
 
 def insertPdf(json):
@@ -63,7 +64,7 @@ def pdf_splitter(index, src_file):
 
 db = MongoClient()['project']
 collection = db['pdfs']
-das = list(db['das'].find())
+das = list(db['das'].find({'cnpj':sys.argv[1]}))
 for item in das:
     try:
         os.system("sudo rm processados/*.pdf")
