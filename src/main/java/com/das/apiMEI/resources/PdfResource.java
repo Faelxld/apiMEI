@@ -32,7 +32,7 @@ public class PdfResource {
         List<Pdf> filtro =  new ArrayList<>();
 
         for (Pdf pdf:pdfs) {
-            if(pdf.getCnpj().equals(cnpj) && pdf.isPartial()){
+            if(pdf.getCnpj().equals(cnpj) && pdf.isLido()){
                 filtro.add(pdf);
             }
         }
