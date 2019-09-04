@@ -1,0 +1,75 @@
+Error: Unable to access jarfile apiMEI
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v2.1.6.RELEASE)
+
+2019-07-31 02:32:59.598  INFO 6465 --- [           main] com.das.apiMEI.ApiMeiApplication         : Starting ApiMeiApplication v0.0.1-SNAPSHOT on fael with PID 6465 (/home/rafael/Desktop/apiMEI/apiMEI-0.0.1-SNAPSHOT.jar started by rafael in /home/rafael/Desktop/apiMEI)
+2019-07-31 02:32:59.601  INFO 6465 --- [           main] com.das.apiMEI.ApiMeiApplication         : No active profile set, falling back to default profiles: default
+2019-07-31 02:33:00.483  INFO 6465 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-07-31 02:33:00.607  INFO 6465 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 118ms. Found 0 repository interfaces.
+2019-07-31 02:33:00.613  INFO 6465 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-07-31 02:33:00.635  INFO 6465 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22ms. Found 1 repository interfaces.
+2019-07-31 02:33:00.977  INFO 6465 --- [           main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$51ec1611] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-07-31 02:33:01.030  INFO 6465 --- [           main] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2019-07-31 02:33:01.339  INFO 6465 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8080 (http)
+2019-07-31 02:33:01.378  INFO 6465 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-07-31 02:33:01.379  INFO 6465 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.21]
+2019-07-31 02:33:01.460  INFO 6465 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-07-31 02:33:01.460  INFO 6465 --- [           main] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1810 ms
+2019-07-31 02:33:01.756  INFO 6465 --- [           main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=MULTIPLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2019-07-31 02:33:01.756  INFO 6465 --- [           main] org.mongodb.driver.cluster               : Adding discovered server localhost:27017 to client view of cluster
+2019-07-31 02:33:01.862  INFO 6465 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:1, serverValue:27}] to localhost:27017
+2019-07-31 02:33:01.867  INFO 6465 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 2, 22]}, minWireVersion=0, maxWireVersion=4, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=null, roundTripTimeNanos=1237031}
+2019-07-31 02:33:01.868  INFO 6465 --- [localhost:27017] org.mongodb.driver.cluster               : Discovered cluster type of STANDALONE
+2019-07-31 02:33:02.354  INFO 6465 --- [           main] org.mongodb.driver.cluster               : Cluster created with settings {hosts=[localhost:27017], mode=SINGLE, requiredClusterType=UNKNOWN, serverSelectionTimeout='30000 ms', maxWaitQueueSize=500}
+2019-07-31 02:33:02.396  INFO 6465 --- [localhost:27017] org.mongodb.driver.connection            : Opened connection [connectionId{localValue:2, serverValue:28}] to localhost:27017
+2019-07-31 02:33:02.399  INFO 6465 --- [localhost:27017] org.mongodb.driver.cluster               : Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, version=ServerVersion{versionList=[3, 2, 22]}, minWireVersion=0, maxWireVersion=4, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=null, roundTripTimeNanos=2038486}
+2019-07-31 02:33:02.641  INFO 6465 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
+2019-07-31 02:33:02.645  INFO 6465 --- [           main] com.das.apiMEI.ApiMeiApplication         : Started ApiMeiApplication in 3.565 seconds (JVM running for 3.972)
+2019-07-31 02:33:06.446  INFO 6465 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2019-07-31 02:33:06.446  INFO 6465 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2019-07-31 02:33:06.453  INFO 6465 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 7 ms
+Retorno do comando = [/home/rafael/Desktop/apiMEI/src/main/java/com/das/apiMEI/crawler/chromedriver]
+/home/rafael/Desktop/apiMEI
+2019-07-31 04:24:23.615  INFO 6465 --- [localhost:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server localhost:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:67) ~[mongodb-driver-core-3.8.2.jar!/:na]
+	at com.mongodb.internal.connection.InternalStreamConnection.open(InternalStreamConnection.java:126) ~[mongodb-driver-core-3.8.2.jar!/:na]
+	at com.mongodb.internal.connection.DefaultServerMonitor$ServerMonitorRunnable.run(DefaultServerMonitor.java:131) ~[mongodb-driver-core-3.8.2.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]
+Caused by: java.net.ConnectException: Connection refused (Connection refused)
+	at java.base/java.net.PlainSocketImpl.socketConnect(Native Method) ~[na:na]
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:399) ~[na:na]
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:242) ~[na:na]
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:224) ~[na:na]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:403) ~[na:na]
+	at java.base/java.net.Socket.connect(Socket.java:591) ~[na:na]
+	at com.mongodb.internal.connection.SocketStreamHelper.initialize(SocketStreamHelper.java:64) ~[mongodb-driver-core-3.8.2.jar!/:na]
+	at com.mongodb.internal.connection.SocketStream.open(SocketStream.java:62) ~[mongodb-driver-core-3.8.2.jar!/:na]
+	... 3 common frames omitted
+
+2019-07-31 04:24:23.615  INFO 6465 --- [localhost:27017] org.mongodb.driver.cluster               : Exception in monitor thread while connecting to server localhost:27017
+
+com.mongodb.MongoSocketOpenException: Exception opening socket
+	at com.mongodb.internal.connection.AsynchronousSocketChannelStream$OpenCompletionHandler.failed(AsynchronousSocketChannelStream.java:272) ~[mongodb-driver-core-3.8.2.jar!/:na]
+	at java.base/sun.nio.ch.Invoker.invokeUnchecked(Invoker.java:129) ~[na:na]
+	at java.base/sun.nio.ch.UnixAsynchronousSocketChannelImpl.finishConnect(UnixAsynchronousSocketChannelImpl.java:282) ~[na:na]
+	at java.base/sun.nio.ch.UnixAsynchronousSocketChannelImpl.finish(UnixAsynchronousSocketChannelImpl.java:198) ~[na:na]
+	at java.base/sun.nio.ch.UnixAsynchronousSocketChannelImpl.onEvent(UnixAsynchronousSocketChannelImpl.java:213) ~[na:na]
+	at java.base/sun.nio.ch.EPollPort$EventHandlerTask.run(EPollPort.java:306) ~[na:na]
+	at java.base/sun.nio.ch.AsynchronousChannelGroupImpl$1.run(AsynchronousChannelGroupImpl.java:112) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:834) ~[na:na]
+Caused by: java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.UnixAsynchronousSocketChannelImpl.checkConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.UnixAsynchronousSocketChannelImpl.finishConnect(UnixAsynchronousSocketChannelImpl.java:252) ~[na:na]
+	... 7 common frames omitted
+
+Error: Unable to access jarfile apiMEI-0.0.1-SNAPSHOT.jar
