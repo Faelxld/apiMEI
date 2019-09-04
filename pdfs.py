@@ -87,7 +87,7 @@ for item in das:
                     except Exception as ex:
                         print(ex)
                 print(act_sub_pages_name )
-                pdf = list(collection.find({'cnpj':cnpj,'ano': ano ,'lido':False}))[0]
+                pdf = list(collection.find({'cnpj':cnpj,'ano': ano}))[0]
                 name = cnpj + '-' + ano
                 download_file(pdf['link'], name )
                 act_pdf_file = os.getcwd() + '/separados/' + name + '.pdf'
