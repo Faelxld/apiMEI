@@ -81,7 +81,7 @@ for item in das:
                         #os.system("sudo rm separados/*.pdf")
                         ano = dsl['Periodo'].split('/')[1]
                         print(dsl['Periodo'])
-                        if dsl['Apurado'] == 'Sim':
+                        if dsl['INSS'] == 'AVencer':
                             apurados.append(dsl)
                             act_sub_pages_name.append(cnpj + '-' + dsl['Periodo'].replace('/','-') + '.pdf')
                     except Exception as ex:
