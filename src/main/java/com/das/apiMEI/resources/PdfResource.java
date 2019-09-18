@@ -6,14 +6,8 @@ import com.das.apiMEI.model.Pdf;
 import com.das.apiMEI.repository.EmpresaRepository;
 import com.das.apiMEI.repository.PdfRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.das.apiMEI.crawler.Crawler;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 

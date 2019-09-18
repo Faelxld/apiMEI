@@ -18,7 +18,7 @@ def insertPdf(json):
             print(json)
         else:
             json['lido'] = element['lido']
-            #collection.update(dicio,json)
+            collection.update(dicio,json)
             print("Atualizado")
     except Exception as ex :
         print(ex)
