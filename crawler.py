@@ -51,6 +51,7 @@ def getCaptcha():
         task = ImageToTextTask(captcha)
         job = client.createTask(task)
         job.join()
+        print((job.get_captcha_text()))
         return (job.get_captcha_text())
     except Exception as ex :
         print(ex)
