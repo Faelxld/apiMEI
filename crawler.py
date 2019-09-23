@@ -45,13 +45,16 @@ def insertPdf(json):
     except Exception as ex :
         print(ex)
 def getCaptcha():
-    captcha = open('captcha.jpg','rb')
-    client = AnticaptchaClient(api_key)
-    task = ImageToTextTask(captcha)
-    job = client.createTask(task)
-    job.join()
-    return (job.get_captcha_text())
-
+    try:
+        captcha = open('captcha.jpg','rb')
+        client = AnticaptchaClient(api_key)
+        task = ImageToTextTask(captcha)
+        job = client.createTask(task)
+        job.join()
+        return (job.get_captcha_text())
+    except Exception as ex :
+        print(ex)
+        return ''
 def getData(element):
     try:
         return parser.parse(element)
