@@ -65,6 +65,7 @@ def pdf_splitter(index, src_file):
 db = MongoClient()['project']
 collection = db['pdfs']
 das = list(db['das'].find({'cnpj':sys.argv[1]}))
+collection.remove({'partial':True,'cnpj':sys.argv[1]})
 for item in das:
     try:
         os.system("sudo rm processados/*.pdf")

@@ -40,7 +40,7 @@ def insertPdf(json):
             print(json)
         else:
             json['lido'] = element['lido']
-            #collection.update(dicio,json)
+            collection.update(dicio,json)
             print("Atualizado")
     except Exception as ex :
         print(ex)
@@ -107,7 +107,7 @@ def enable_download_in_headless_chrome( driver, download_dir):
     driver.execute("send_command", params)
 
 chrome_options = Options()
-chrome_options.add_argument('headless')
+#chrome_options.add_argument('headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 download_dir = os.getcwd() + '/guias/'
@@ -134,11 +134,11 @@ for cnpj in empresas:
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
         req.urlretrieve(captcha_fp, "captcha.jpg")
         captcha_input.send_keys(getCaptcha())
-        time.sleep(2)
+        time.sleep(5)
         login_box.click()
         emissao = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/emissao'
         browser.get(emissao)
-        time.sleep(3)
+        time.sleep(5)
         combo_box = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/button')
         combo_box.click()
         lis = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/div/ul').find_elements_by_tag_name('li')
@@ -164,7 +164,8 @@ for cnpj in empresas:
                 soup = BeautifulSoup(html, 'html.parser')
                 trs = soup.find('table',class_='table table-hover table-condensed emissao is-detailed').find_all('tr')
                 trs = trs[2:]
-            except:
+            except Exception as ex:
+                print(ex)
                 continue
             for tr in trs:
                 tds = tr.find_all('td')
