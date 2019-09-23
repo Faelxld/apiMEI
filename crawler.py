@@ -120,7 +120,7 @@ prefs = {'download.default_directory':download_dir,
 chrome_options.add_experimental_option('prefs', prefs)
 
 const = '/src/main/java/com/das/apiMEI/crawler'
-print(os.getcwd() + const + "/chromedriver")
+print(os.getcwd()+ "/chromedriver")
 empresas = [sys.argv[1]]
 jsons = []
 voltar = 0
@@ -138,8 +138,8 @@ for cnpj in empresas:
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
         req.urlretrieve(captcha_fp, "captcha.jpg")
         captcha_input.send_keys(getCaptcha())
-        time.sleep(4)
         login_box.click()
+        time.sleep(4)
         emissao =   browser.find_element_by_xpath('//*[@id="navbarCollapse"]/ul[1]/li[2]/a')
         emissao.click()
         time.sleep(3)
