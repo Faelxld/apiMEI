@@ -208,6 +208,8 @@ for cnpj in empresas:
                 buttonImprimir = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[1]')
                 buttonImprimir.click()
                 time.sleep(6)
+                button_voltar = browser.find_element_by_xpath('/html/body/div[1]/section[3]/div/div/div[1]/div/div/div[3]/div/div/a[2]')
+                button_voltar.click()
                 firebase = initialFireBase()
                 storage = firebase.storage()
                 arquivo = os.listdir(os.getcwd() + '/guias')
