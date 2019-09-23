@@ -133,7 +133,7 @@ for cnpj in empresas:
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
         username_box = browser.find_element_by_id('cnpj')
-        username_box.send_keys(cnpj)
+        username_box.send_keys(cnpj)              
         login_box = browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[3]/div/button')
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
         req.urlretrieve(captcha_fp, "captcha.jpg")
