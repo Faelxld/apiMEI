@@ -132,7 +132,6 @@ for cnpj in empresas:
         username_box.send_keys(cnpj)
         login_box = browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[3]/div/button')
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
-        print(captcha_fp)
         req.urlretrieve(captcha_fp, "captcha.jpg")
         captcha_input.send_keys(getCaptcha())
         time.sleep(5)
@@ -140,7 +139,7 @@ for cnpj in empresas:
         emissao = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/emissao'
         browser.get(emissao)
         time.sleep(5)
-        combo_box = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/button')
+        combo_box = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div/div/div/form/div/div/button')
         combo_box.click()
         lis = browser.find_element_by_xpath('/html/body/div/section[3]/div/div/div[1]/div/div/form/div/div/div/ul').find_elements_by_tag_name('li')
         anos = len(lis)
