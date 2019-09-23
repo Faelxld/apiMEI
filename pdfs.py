@@ -113,8 +113,6 @@ for item in das:
                         arqvPdf['_id'] =  arqvPdf['cnpj'] + '-' + arqvPdf['Periodo'].replace('/','-')
                         print(arqvPdf)
                         insertPdf(arqvPdf)
-                        pdf['lido'] = True
-                        collection.update({'_id':pdf['_id']},pdf)
                     except Exception as ex:
                         print(ex)
 
