@@ -107,7 +107,7 @@ def enable_download_in_headless_chrome( driver, download_dir):
     driver.execute("send_command", params)
 
 chrome_options = Options()
-#chrome_options.add_argument('headless')
+chrome_options.add_argument('headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 download_dir = os.getcwd() + '/guias/'
@@ -132,6 +132,7 @@ for cnpj in empresas:
         username_box.send_keys(cnpj)
         login_box = browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[3]/div/button')
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
+        print(captcha_fp)
         req.urlretrieve(captcha_fp, "captcha.jpg")
         captcha_input.send_keys(getCaptcha())
         time.sleep(5)
