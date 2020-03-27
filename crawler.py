@@ -12,6 +12,7 @@ import urllib3
 from pyrebase import *
 import os
 import sys
+
 api_key = 'cfe54019f70ef987c0afcae6da1082ad'
 
 def insertNuvem(json):
@@ -44,14 +45,15 @@ def insertPdf(json):
             print("Atualizado")
     except Exception as ex :
         print(ex)
-def getCaptcha():
+def getCaptcha(cnpj):
     try:
-        captcha = open('captcha.jpg','rb')
+        captcha = open('captcha'+str(cnpj)+'.jpg','rb')
         client = AnticaptchaClient(api_key)
         task = ImageToTextTask(captcha)
         job = client.createTask(task)
         job.join()
         print((job.get_captcha_text()))
+        os.system('sudo rm ' + ' captcha'+str(cnpj)+'.jpg')
         return (job.get_captcha_text())
     except Exception as ex :
         print(ex)
@@ -136,8 +138,8 @@ for cnpj in empresas:
         username_box.send_keys(cnpj)
         login_box = browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[3]/div/button')
         captcha_fp = browser.find_element_by_id('imgCaptcha').get_attribute('src')
-        req.urlretrieve(captcha_fp, "captcha.jpg")
-        captcha_input.send_keys(getCaptcha())
+        req.urlretrieve(captcha_fp, "captcha"+str(cnpj) + ".jpg")
+        captcha_input.send_keys(getCaptcha(cnpj))
         login_box.click()
         time.sleep(4)
         emissao =   browser.find_element_by_xpath('//*[@id="navbarCollapse"]/ul[1]/li[2]/a')
@@ -197,7 +199,7 @@ for cnpj in empresas:
             }
 
             try:
-                os.system('sudo rm guias/*.pdf')
+                os.system('sudo rm guias/*'+cnpj+ '*')
                 json['das'].append(guias)
                 time.sleep(2)
                 check_box = browser.find_element_by_id('selecionarTodos')
@@ -223,7 +225,7 @@ for cnpj in empresas:
                 insertPdf(pdf)
                 browser.get(emissao)
                 time.sleep(3)
-                os.system('sudo rm guias/*.pdf')
+                os.system('sudo rm guias/*'+cnpj+ '*')
             except Exception as ex:
                 print(ex)
         jsons.append(json)
@@ -234,4 +236,3 @@ for cnpj in empresas:
 for json in jsons:
     insertNuvem(json)
 
-os.system('sudo rm guias/*.pdf')

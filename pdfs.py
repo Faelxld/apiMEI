@@ -68,8 +68,9 @@ das = list(db['das'].find({'cnpj':sys.argv[1]}))
 collection.remove({'partial':True,'cnpj':sys.argv[1]})
 for item in das:
     try:
-        os.system("sudo rm processados/*.pdf")
-        os.system("sudo rm separados/*.pdf")
+        os.system('find '+  os.getcwd()+ '/processados' + ' -name '  + cnpj + '-exec rm -f {} \;')
+        os.system('find '+  os.getcwd()+ '/separados' + ' -name '  + cnpj + '-exec rm -f {} \;')
+
         cnpj = item['cnpj']
         listaDas = item['das']
         for ds in listaDas:
@@ -121,7 +122,8 @@ for item in das:
             except Exception as ex:
                 print(ex)
             finally:
-                os.system("sudo rm processados/*.pdf")
-                os.system("sudo rm separados/*.pdf")
+                os.system('sudo rm processados/*'+cnpj+ '*')
+                os.system('sudo rm separados/*'+cnpj+ '*')
+
     except Exception as ex:
         print(ex)
