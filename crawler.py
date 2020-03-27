@@ -127,6 +127,7 @@ empresas = [sys.argv[1]]
 jsons = []
 voltar = 0
 pdfs = []
+print(cnpj)
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
