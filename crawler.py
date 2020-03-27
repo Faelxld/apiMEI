@@ -127,11 +127,11 @@ empresas = [sys.argv[1]]
 jsons = []
 voltar = 0
 pdfs = []
-print(cnpj)
 for cnpj in empresas:
     try:
         url = 'http://www8.receita.fazenda.gov.br/SimplesNacional/Aplicacoes/ATSPO/pgmei.app/Identificacao'
         browser = webdriver.Chrome(os.getcwd() + "/chromedriver" ,chrome_options=chrome_options)
+        print(cnpj)
         enable_download_in_headless_chrome(browser,download_dir)
         browser.get(url)
         captcha_input =  browser.find_element_by_xpath('/html/body/div/section/div/div/div/div/div/div[2]/form/div/div[1]/div[2]/input')
